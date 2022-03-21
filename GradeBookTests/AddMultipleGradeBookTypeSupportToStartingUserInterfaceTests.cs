@@ -39,7 +39,10 @@ namespace GradeBookTests
                         output = consolestream.ToString().ToLower();
 
                         //Test that message written to console when parts.length != 3.
-                        Assert.True(output.Contains("command not valid"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write a message to the console when the create command didn't contain both a name and type.");
+                        while (output.Length != 3)
+                        {
+                            Assert.True(output.Contains("command not valid"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write a message to the console when the create command didn't contain both a name and type.");
+                        }
                     }
                 }
             }
