@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace GradeBook.GradeBooks
 {
@@ -14,23 +15,28 @@ namespace GradeBook.GradeBooks
 
         public override char GetLetterGrade(double averageGrade)
         {
-            int numberOfStudents = Students.Count;
-
-            double N = Convert.ToDouble(numberOfStudents / 5);
-            if (Students.Count < 5)
-                throw new InvalidOperationException();
-            else if (averageGrade >= N)
+            if (this.Students.Count < 5) throw new InvalidOperationException();
+            int average = 0;
+            foreach (var student in this.Students)
+            {
+                if (Queryable.Average(student.Grades.AsQueryable()) > averageGrade)
+                {
+                    ++average;
+                }
+            }
+            double n = average / (double)this.Students.Count;
+            if (n < 0.2)
                 return 'A';
-            else if (averageGrade >= 2*N)
+            else if (n < 0.4)
                 return 'B';
-            else if (averageGrade >= 3*N)
+            else if (n < 0.6)
                 return 'C';
-            else if (averageGrade >= 4*N)
+            else if (n < 0.8)
                 return 'D';
             else
                 return 'F';
         }
-        
+
         public override void CalculateStatistics()
         {
             if (Students.Count < 5)
